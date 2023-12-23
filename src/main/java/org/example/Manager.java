@@ -27,10 +27,10 @@ public class Manager {
                         addressList = choiceParseVariant(path);
 
                         if (!addressList.isEmpty()) {
-                            getUniqueAddress(addressList);
+                            uniqueAddressList = getUniqueAddress(addressList);
                             printDuplicateAddress();
 
-                            getCityFloorCount(uniqueAddressList);
+                            cityFloorList = getCityFloorCount(uniqueAddressList);
                             printCityFloor();
                         } else {
                             throw new Exception("Ошибка чтения файла");
@@ -50,7 +50,7 @@ public class Manager {
 
     public void printMenu() {
         System.out.println("Считывание файла - 1");
-        System.out.println("Выход- 0");
+        System.out.println("Выход - 0");
     }
 
     public void printDuplicateAddress() {
@@ -59,7 +59,7 @@ public class Manager {
 
         if (!uniqueAddressList.isEmpty()) {
             for (Address address : uniqueAddressList.keySet()){
-                if (uniqueAddressList.get(address) > 0) {
+                if (uniqueAddressList.get(address) > 1) {
                     System.out.println(address + " - количество дублей " + uniqueAddressList.get(address));
                     checkDuplicateAddress = true;
                 }
@@ -80,25 +80,25 @@ public class Manager {
         }
     }
 
-    public void getUniqueAddress(ArrayList<Address> list) {
+    public Map<Address, Integer> getUniqueAddress(ArrayList<Address> list) {
         Map<Address, Integer> addressUnique = new HashMap<>();
         Address address;
 
-        for (int i = 1; i < list.size(); i++) {
+        for (int i = 0; i < list.size(); i++) {
             address = list.get(i);
 
             if (addressUnique.containsKey(address)) {
                 Integer duplicateAddressCount = addressUnique.get(address) + 1;
                 addressUnique.put(address, duplicateAddressCount);
             } else {
-                addressUnique.put(address, 0);
+                addressUnique.put(address, 1);
             }
         }
 
-        uniqueAddressList = addressUnique;
+        return addressUnique;
     }
 
-    public void getCityFloorCount(Map<Address, Integer> addressList) {
+    public Map<String, City> getCityFloorCount(Map<Address, Integer> addressList) {
         Map<String, City> cityList = new HashMap<>();
 
         for (Address address : addressList.keySet()) {
@@ -131,10 +131,12 @@ public class Manager {
             cityList.put(city.getName(), city);
         }
 
-        cityFloorList = cityList;
+        return cityList;
     }
 
     public ArrayList<Address> choiceParseVariant(String path) throws Exception {
+        String mainPath = "src/main/resources/" + path;
+        ParserFile parser = null;
         int sizeExtension = 5; // a.xml || b.csv || ...
         String extension;
 
@@ -144,14 +146,12 @@ public class Manager {
             extension = path.substring(path.length() - 3);
         }
 
-        ParserFile parser = null;
-
         if (extension.equals("xml")) {
-            parser = new ParserFactory().createParser(XML);
-            return new ArrayList<>(parser.parse("address.xml"));
+            parser = ParserFactory.createParser(XML);
+            return new ArrayList<>(parser.parse(mainPath));
         } else if (extension.equals("csv")) {
-            parser = new ParserFactory().createParser(CSV);
-            return new ArrayList<>(parser.parse("address.csv"));
+            parser = ParserFactory.createParser(CSV);
+            return new ArrayList<>(parser.parse(mainPath));
         } else {
             throw new ExtensionExeption("Ошибка расширения файла");
         }

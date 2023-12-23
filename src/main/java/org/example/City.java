@@ -14,6 +14,15 @@ public class City {
         this.name = name;
     }
 
+    public City(String name, int oneFloor, int twoFloor, int threeFloor, int fourFloor, int fiveFloor) {
+        this.name = name;
+        this.oneFloor = oneFloor;
+        this.twoFloor = twoFloor;
+        this.threeFloor = threeFloor;
+        this.fourFloor = fourFloor;
+        this.fiveFloor = fiveFloor;
+    }
+
     public String getName() {
         return name;
     }
