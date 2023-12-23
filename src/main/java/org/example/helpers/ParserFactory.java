@@ -1,7 +1,7 @@
 package org.example.helpers;
 
 public class ParserFactory {
-    public ParserFile createParser(ParserType type) throws Exception {
+    public static ParserFile createParser(ParserType type){
         ParserFile parser = null;
 
         switch (type) {
@@ -11,10 +11,6 @@ public class ParserFactory {
             case CSV:
                 parser =  new ParserCsv();
                 break;
-        }
-
-        if (parser == null) {
-            throw new Exception("Ошибка типа парсера");
         }
 
         return parser;

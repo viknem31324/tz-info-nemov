@@ -9,8 +9,7 @@ import java.util.ArrayList;
 
 public class ParserCsv extends ParserFile {
     @Override
-    public ArrayList<Address> parse(String fileName){
-        String path = "src/main/resources/" + fileName;
+    public ArrayList<Address> parse(String path){
         ArrayList<String> lineList;
         ArrayList<Address> addressList = new ArrayList<>();
 

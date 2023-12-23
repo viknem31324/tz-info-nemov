@@ -52,7 +52,7 @@ public class ParserXml extends ParserFile {
     }
 
     public Document buildDocument(String path) throws Exception {
-        File file = new File("src/main/resources/" + path);
+        File file = new File(path);
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         return dbf.newDocumentBuilder().parse(file);
     }
